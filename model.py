@@ -20,6 +20,10 @@ class User(db.Model):
 
     __tablename__ = "users"
 
+    def __repr__(self):
+        """Provide helpful representaion when printed"""
+        return "User user_id={} enail={}>".format(self.user_id, self.email)
+
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     email = db.Column(db.String(64), nullable=True)
     password = db.Column(db.String(64), nullable=True)
@@ -47,7 +51,7 @@ class Rating(db.Model):
 
     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     movie_id = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False) #set to false brcause you need to connect it to other tables
     score = db.Column(db.Integer, nullable=True)
 
        
