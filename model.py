@@ -56,12 +56,18 @@ class Rating(db.Model):
 
     # Define relationship to user
     user = db.relationship("User", backref=db.backref("ratings", order_by=rating_id))
+    # same with querying User/users? same result?
+    
 
     # Define relationship to movie
     movie = db.relationship("Movie", backref=db.backref("ratings", order_by=rating_id))
+
+
     def __repr__(self):
         """Provide helpful representation when printed."""
         return "<Rating rating_id={} movie_id={} user_id={} score={}>".format(self.rating_id, self.movie_id, self.user_id, self.score)
+
+
    
 ##############################################################################
 # Helper functions
