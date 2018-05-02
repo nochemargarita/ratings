@@ -38,13 +38,58 @@ def register_form():
     return render_template("register_form.html")
 
 @app.route("/register", methods=["POST"])
+def register_process():
+    """Complete registration"""
 
+    email = request.form.get("email")
+    password = request.form.get("password")
+    user = User(email=email, password=password)
+
+    db.session.add(user)
+    db.session.commit()
+
+    return redirect('/')
+
+@app.route("/login")
+def login_form():
+
+    return render_template("login_form.html")
+
+@app.route("/login", methods=["POST"])
+def login():
+    
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = db.session.query(User).filter(User.email == email,
+                                        User.password == password).first()
+    if user:
+        flash('You were successfully logged in')
+        return redirect('/')
+
+    else:
+        flash('You successfully failed!')
+        return redirect('/login')
+
+    # flash("works")
+
+
+    # print user
+    # SELECT users.user_id AS users_user_id, users.email AS users_email, users.password AS users_password, users.age AS users_age, users.zipcode AS users_zipcode 
+    # FROM users 
+    # WHERE users.email = %(email_1)s AND users.password = %(password_1)s
+
+@app.route("/logout")
+def logout():
+
+    flash('You successfully logged out! Come back soon!')
+    return redirect('/')
 
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
-    app.debug = True
+    app.debug = False
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
 
