@@ -30,7 +30,16 @@ def user_list():
 
     users = User.query.all()
     return render_template("user_list.html", users=users)
-    
+
+@app.route("/register")
+def register_form():
+    """ Directs user to register. """
+
+    return render_template("register_form.html")
+
+@app.route("/register", methods=["POST"])
+
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
