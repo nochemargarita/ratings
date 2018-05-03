@@ -16,13 +16,15 @@
 <p><a href="/register">Sign-up</a></p>
 <br><br>
 
-<h2>Login</h2>
-<p><a href="/login">Login</a></p>
-
-<h2>Logout</h2>
-<form action="/logout">
-	<input type="submit" value=Logout>
-</form>
+{% if 'email' not in session %}
+	<form action="/login">
+		<input type="submit" value=Login>
+	</form>
+{% else %}
+	<form action="/logout">
+		<input type="submit" value=Logout>
+	</form>
+{% endif %}
 
 
 {% endblock %}

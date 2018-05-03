@@ -43,15 +43,18 @@ def register_process():
 
     email = request.form.get("email")
     password = request.form.get("password")
+    age = request.form.get("age")
+    zipcode = request.form.get("zipcode")
 
     q = db.session.query(User).filter(User.email == email)
-    # print q
+    print q
     if db.session.query(q.exists()):
         flash('Email is already taken!')
+        print 'hi'
         return redirect('/register')
         
     else:
-        user = User(email=email, password=password)
+        user = User(email=email, password=password, age=age, zipcode=zipcode)
         db.session.add(user)
         db.session.commit()
 
@@ -79,10 +82,9 @@ def login():
         flash('You successfully failed!')
         return redirect('/login')
 
-    # flash("works")
-
-
+    print session
     # print user
+
     # SELECT users.user_id AS users_user_id, users.email AS users_email, users.password AS users_password, users.age AS users_age, users.zipcode AS users_zipcode 
     # FROM users 
     # WHERE users.email = %(email_1)s AND users.password = %(password_1)s
@@ -93,6 +95,17 @@ def logout():
     session.pop('email', None)
     print session
     return redirect('/')
+
+@app.route("/user_info")
+def display_user_info():
+
+    user_id = session['user_id']
+    user = db.session.query(Rating).filter(Rating.user_id == user_id).all()
+    return redirect("/")
+    print session
+    print user
+
+
 
 
 if __name__ == "__main__":
