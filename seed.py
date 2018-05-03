@@ -26,7 +26,6 @@ def load_users():
                     age=age,
                     zipcode=zipcode)
         # user is one row
-
         # We need to add to the session or it won't ever be stored
         db.session.add(user)
 

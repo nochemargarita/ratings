@@ -43,12 +43,19 @@ def register_process():
 
     email = request.form.get("email")
     password = request.form.get("password")
-    user = User(email=email, password=password)
 
-    db.session.add(user)
-    db.session.commit()
+    q = db.session.query(User).filter(User.email == email)
+    # print q
+    if db.session.query(q.exists()):
+        flash('Email is already taken!')
+        return redirect('/register')
+        
+    else:
+        user = User(email=email, password=password)
+        db.session.add(user)
+        db.session.commit()
 
-    return redirect('/')
+        return redirect('/')
 
 @app.route("/login")
 def login_form():
@@ -64,6 +71,7 @@ def login():
     user = db.session.query(User).filter(User.email == email,
                                         User.password == password).first()
     if user:
+        session['email'] = request.form.get('email')
         flash('You were successfully logged in')
         return redirect('/')
 
@@ -81,8 +89,9 @@ def login():
 
 @app.route("/logout")
 def logout():
-
     flash('You successfully logged out! Come back soon!')
+    session.pop('email', None)
+    print session
     return redirect('/')
 
 
