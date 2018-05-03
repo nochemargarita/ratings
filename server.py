@@ -46,14 +46,15 @@ def register_process():
     age = request.form.get("age")
     zipcode = request.form.get("zipcode")
 
-    q = db.session.query(User).filter(User.email == email)
-    print q
-    if db.session.query(q.exists()):
+    q = db.session.query(User).filter(User.email == email).first()
+    # if it did not find anything, it will return none and none evaluates to false
+    
+    if q:
         flash('Email is already taken!')
-        print 'hi'
         return redirect('/register')
         
     else:
+        flash('You successfully registered!')
         user = User(email=email, password=password, age=age, zipcode=zipcode)
         db.session.add(user)
         db.session.commit()
@@ -73,6 +74,7 @@ def login():
 
     user = db.session.query(User).filter(User.email == email,
                                         User.password == password).first()
+    
     if user:
         session['email'] = request.form.get('email')
         flash('You were successfully logged in')
